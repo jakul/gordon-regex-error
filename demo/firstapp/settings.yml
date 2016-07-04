@@ -1,0 +1,26 @@
+lambdas:
+  helloworld:
+    code: helloworld
+    handler: code.handler
+    runtime: python
+    #description: Simple functions in python which says hello
+    #role:
+    #memory:
+apigateway:
+    sample_api:
+        resources:
+            /event/:
+                methods: POST
+                integration:
+                  lambda: firstapp:helloworld
+                  responses:
+                    - pattern: ""
+                      code: "201"
+                    - pattern: '.*"status":400.*'
+                      code: "400"
+                    - pattern: '*.\"errorMessage\".*'
+                      code: "500"
+                responses:
+                  - code: "201"
+                  - code: "400"
+                  - code: "500"
